@@ -1,5 +1,7 @@
 package net.dirtcraft.plugin.playerholograms;
 
+import com.feed_the_beast.ftblib.lib.data.ForgePlayer;
+import com.feed_the_beast.ftblib.lib.data.Universe;
 import com.feed_the_beast.ftblib.lib.math.ChunkDimPos;
 import com.feed_the_beast.ftbutilities.data.ClaimedChunk;
 import com.feed_the_beast.ftbutilities.data.ClaimedChunks;
@@ -146,8 +148,9 @@ public class Utility {
                 ClaimedChunks.instance.getChunk(new ChunkDimPos((net.minecraft.entity.Entity) player)));
         if (!optionalChunk.isPresent()) throw new CommandException(format("&cPlease claim this chunk before creating a hologram!"));
         ClaimedChunk chunk = optionalChunk.get();
-        System.out.println(chunk.getTeam().players.toString());
-        return chunk.getTeam().players.containsKey(chunk.getTeam().universe.players.get(((EntityPlayerMP) player).getUniqueID()));
+        Set<ForgePlayer> players = chunk.getTeam().players.keySet();
+        players.add(chunk.getTeam().getOwner());
+        return players.contains(Universe.get().players.get(((EntityPlayerMP) player).getUniqueID()));
     }
 
 }
