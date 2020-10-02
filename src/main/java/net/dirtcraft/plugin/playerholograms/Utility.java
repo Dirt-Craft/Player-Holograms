@@ -15,7 +15,6 @@ import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.query.QueryOptions;
-import net.minecraft.entity.player.EntityPlayerMP;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.Entity;
@@ -148,7 +147,7 @@ public class Utility {
                 ClaimedChunks.instance.getChunk(new ChunkDimPos((net.minecraft.entity.Entity) player)));
         if (!optionalChunk.isPresent()) throw new CommandException(format("&cPlease claim this chunk before creating a hologram!"));
         ClaimedChunk chunk = optionalChunk.get();
-        return chunk.getTeam().players.containsKey(new ForgePlayer(Universe.get(), ((EntityPlayerMP) player).getGameProfile()));
+        return chunk.getTeam().players.containsKey(new ForgePlayer(Universe.get(), player.getUniqueId(), player.getName()));
     }
 
 }
