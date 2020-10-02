@@ -148,9 +148,9 @@ public class Utility {
                 ClaimedChunks.instance.getChunk(new ChunkDimPos((net.minecraft.entity.Entity) player)));
         if (!optionalChunk.isPresent()) throw new CommandException(format("&cPlease claim this chunk before creating a hologram!"));
         ClaimedChunk chunk = optionalChunk.get();
-        Set<ForgePlayer> players = new HashMap<>(chunk.getTeam().players).keySet();
-        players.add(chunk.getTeam().getOwner());
-        return players.contains(Universe.get().players.get(((EntityPlayerMP) player).getUniqueID()));
+        ForgePlayer forgePlayer = Universe.get().players.get(((EntityPlayerMP) player).getUniqueID());
+        if (chunk.getTeam().isOwner(forgePlayer)) return true;
+        return new HashMap<>(chunk.getTeam().players).containsKey(forgePlayer);
     }
 
 }
