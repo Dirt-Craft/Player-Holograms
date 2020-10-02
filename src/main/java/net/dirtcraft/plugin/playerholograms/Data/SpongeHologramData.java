@@ -19,9 +19,9 @@ import java.util.UUID;
 
 public class SpongeHologramData extends AbstractData<HologramData, ImmutableHologramData> implements HologramData {
 
-    public static final DataQuery NAME = DataQuery.of("name");
-    public static final DataQuery ACTIVE = DataQuery.of("active");
-    public static final DataQuery OWNER = DataQuery.of("owner");
+    public static final DataQuery NAME = DataQuery.of("player-holograms:name");
+    public static final DataQuery ACTIVE = DataQuery.of("player-holograms:active");
+    public static final DataQuery OWNER = DataQuery.of("player-holograms:owner");
 
     private String name;
     private boolean isHologram;
