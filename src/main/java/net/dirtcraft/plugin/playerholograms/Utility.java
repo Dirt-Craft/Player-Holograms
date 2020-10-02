@@ -118,7 +118,7 @@ public class Utility {
                 .collect(Collectors.toList());
         if (values.isEmpty()) values.add(0);
         Integer amount = Collections.max(values);
-        if (amount == -1) return Integer.MAX_VALUE;
+        if (amount == -1) return 999;
         else return amount;
     }
 
