@@ -149,8 +149,7 @@ public class Utility {
         if (!optionalChunk.isPresent()) throw new CommandException(format("&cPlease claim this chunk before creating a hologram!"));
         ClaimedChunk chunk = optionalChunk.get();
         ForgePlayer forgePlayer = Universe.get().players.get(((EntityPlayerMP) player).getUniqueID());
-        if (chunk.getTeam().isOwner(forgePlayer)) return true;
-        return new HashMap<>(chunk.getTeam().players).containsKey(forgePlayer);
+        return chunk.getTeam().isMember(forgePlayer);
     }
 
 }
