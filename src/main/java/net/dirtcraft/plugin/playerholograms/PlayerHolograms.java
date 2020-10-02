@@ -35,8 +35,14 @@ public class PlayerHolograms {
     public void onGameInit(GameInitializationEvent event) {
         if (Sponge.getPluginManager().isLoaded("pixelmon")) return;
         Sponge.getCommandManager().register(this, Menu.getSpec(), "hologram", "holo", "holos", "holograms");
-        if (Sponge.getPluginManager().isLoaded("griefprevention")) isGpLoaded = true;
-        if (Sponge.getPluginManager().isLoaded("ftbutilities")) isFtbLoaded = true;
+        if (Sponge.getPluginManager().isLoaded("griefprevention")) {
+            isGpLoaded = true;
+            logger.warn(container.getName() + " has detected claim system: Grief Prevention");
+        }
+        if (Sponge.getPluginManager().isLoaded("ftbutilities")) {
+            isFtbLoaded = true;
+            logger.warn(container.getName() + " has detected claim system: FTB Utilities");
+        }
     }
 
     @Listener
