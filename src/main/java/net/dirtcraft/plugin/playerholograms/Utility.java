@@ -15,9 +15,9 @@ import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.query.QueryOptions;
+import net.minecraft.entity.player.EntityPlayerMP;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
@@ -144,20 +144,11 @@ public class Utility {
 
     public static boolean canUseFtbChunk(Player player) throws CommandException {
         if (player.hasPermission("holograms.bypass")) return true;
-        Location<World> location = player.getLocation();
         Optional<ClaimedChunk> optionalChunk = Optional.ofNullable(
-                ClaimedChunks.instance.getChunk(
-                        new ChunkDimPos(
-                                location.getBlockX(),
-                                location.getBlockZ(),
-                                location.getExtent()
-                                        .getProperties()
-                                        .getAdditionalProperties()
-                                        .getInt(DataQuery.of("SpongeData", "dimensionId"))
-                                        .orElseThrow(() -> new CommandException(format("&cCould not retrieve the Dimension ID for this world. Please contact an administrator."))))));
+                ClaimedChunks.instance.getChunk(new ChunkDimPos((net.minecraft.entity.Entity) player)));
         if (!optionalChunk.isPresent()) throw new CommandException(format("&cPlease claim this chunk before creating a hologram!"));
         ClaimedChunk chunk = optionalChunk.get();
-        return chunk.getTeam().players.containsKey(new ForgePlayer(Universe.get(), player.getUniqueId(), player.getName()));
+        return chunk.getTeam().players.containsKey(new ForgePlayer(Universe.get(), ((EntityPlayerMP) player).getGameProfile()));
     }
 
 }
