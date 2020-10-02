@@ -71,7 +71,16 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude "mcmod.info"
     }
+
 }
+
+task deleteSrcs {
+    doLast {
+        file("build/libs/Player-Holograms-${version}-sources.jar").delete()
+    }
+}
+
+build.dependsOn deleteSrcs
 
 sponge.plugin.id = 'player-holograms'
 compileJava.options.encoding = 'UTF-8'
