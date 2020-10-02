@@ -17,6 +17,7 @@ import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.query.QueryOptions;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
@@ -148,8 +149,12 @@ public class Utility {
                 ClaimedChunks.instance.getChunk(
                         new ChunkDimPos(
                                 location.getBlockX(),
-                                location.getBlockY(),
-                                location.getBlockZ())));
+                                location.getBlockZ(),
+                                location.getExtent()
+                                        .getProperties()
+                                        .getAdditionalProperties()
+                                        .getInt(DataQuery.of("SpongeData", "dimensionId"))
+                                        .orElseThrow(() -> new CommandException(format("&cCould not retrieve the Dimension ID for this world. Please contact an administrator."))))));
         if (!optionalChunk.isPresent()) throw new CommandException(format("&cPlease claim this chunk before creating a hologram!"));
         ClaimedChunk chunk = optionalChunk.get();
         return chunk.getTeam().players.containsKey(new ForgePlayer(Universe.get(), player.getUniqueId(), player.getName()));
