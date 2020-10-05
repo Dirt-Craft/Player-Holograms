@@ -11,7 +11,6 @@ import org.spongepowered.api.data.manipulator.mutable.common.AbstractData;
 import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.persistence.AbstractDataBuilder;
 import org.spongepowered.api.data.persistence.InvalidDataException;
-import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
@@ -90,19 +89,22 @@ public class SpongeHologramData extends AbstractData<HologramData, ImmutableHolo
 
     @Override
     public Optional<HologramData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        final Optional<HologramData> hologramData = dataHolder.get(HologramData.class);
-        return hologramData.isPresent() ? hologramData.map(data -> this.set(data.getValues())) : Optional.of(this);
+        dataHolder.get(HologramData.class).ifPresent(data -> data.set(overlap.merge(this, data).getValues()));
+        return Optional.of(this);
     }
 
     @Override
     public Optional<HologramData> from(DataContainer container) {
-        if (!container.contains(Hologram.HOLOGRAM_NAME, Hologram.IS_HOLOGRAM, Hologram.HOLOGRAM_OWNER)) return Optional.empty();
-        Optional<Object> optionalValue = container.get(DataQuery.of("player-holograms"));
-        if (!optionalValue.isPresent()) return Optional.empty();
-        Object value = optionalValue.get();
-        if (!(value instanceof BaseValue<?>)) return Optional.empty();
-        BaseValue<?> baseValue = (BaseValue<?>) value;
-        this.set(baseValue);
+        if (!container.contains(NAME, ACTIVE, OWNER)) return Optional.empty();
+
+        final String name = container.getString(NAME).get();
+        final boolean isHologram = container.getBoolean(ACTIVE).get();
+        final UUID owner = container.getObject(OWNER, UUID.class).get();
+
+        this.set(Hologram.HOLOGRAM_NAME, name);
+        this.set(Hologram.IS_HOLOGRAM, isHologram);
+        this.set(Hologram.HOLOGRAM_OWNER, owner);
+
         return Optional.of(this);
     }
 
@@ -145,8 +147,7 @@ public class SpongeHologramData extends AbstractData<HologramData, ImmutableHolo
 
         @Override
         public Optional<HologramData> createFrom(DataHolder dataHolder) {
-            final Optional<HologramData> hologramData = dataHolder.get(HologramData.class);
-            return hologramData.isPresent() ? hologramData : Optional.of(new SpongeHologramData());
+            return Optional.of(dataHolder.get(HologramData.class).orElseGet(this::create));
         }
     }
 }
