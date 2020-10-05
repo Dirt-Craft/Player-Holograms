@@ -83,8 +83,9 @@ public class SpongeHologramData extends AbstractData<HologramData, ImmutableHolo
     @Override
     public DataContainer toContainer() {
         return super.toContainer()
-                .set(Hologram.IS_HOLOGRAM, this.isHologram)
-                .set(Hologram.HOLOGRAM_OWNER, this.owner);
+                .set(NAME, this.name)
+                .set(ACTIVE, this.isHologram)
+                .set(OWNER, this.owner);
     }
 
     @Override
@@ -100,6 +101,8 @@ public class SpongeHologramData extends AbstractData<HologramData, ImmutableHolo
         final String name = container.getString(NAME).get();
         final boolean isHologram = container.getBoolean(ACTIVE).get();
         final UUID owner = container.getObject(OWNER, UUID.class).get();
+
+        System.out.println("Method: From\nName: " + name + "\nActive: " + isHologram + "\nOwner: " + owner);
 
         this.set(Hologram.HOLOGRAM_NAME, name);
         this.set(Hologram.IS_HOLOGRAM, isHologram);
@@ -136,6 +139,8 @@ public class SpongeHologramData extends AbstractData<HologramData, ImmutableHolo
             final String name = container.getString(NAME).get();
             final boolean isHologram = container.getBoolean(ACTIVE).get();
             final UUID owner = container.getObject(OWNER, UUID.class).get();
+
+            System.out.println("Method: Build Content\nName: " + name + "\nActive: " + isHologram + "\nOwner: " + owner);
 
             return Optional.of(new SpongeHologramData(name, isHologram, owner));
         }
