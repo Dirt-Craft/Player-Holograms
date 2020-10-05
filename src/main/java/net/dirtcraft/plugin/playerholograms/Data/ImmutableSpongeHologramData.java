@@ -1,12 +1,13 @@
 package net.dirtcraft.plugin.playerholograms.Data;
 
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableData;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 
 import java.util.UUID;
 
-public class ImmutableSpongeHologramData extends AbstractImmutableData<ImmutableHologramData, HologramData> implements ImmutableHologramData {
+public class ImmutableSpongeHologramData extends AbstractImmutableData<ImmutableHologramData, HologramData> implements ImmutableDataManipulator<ImmutableHologramData, HologramData>, ImmutableHologramData {
 
     private final ImmutableValue<String> immutableName;
     private final ImmutableValue<Boolean> immutableIsHologram;
